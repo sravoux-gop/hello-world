@@ -1,16 +1,46 @@
-# Blind Test App – Spécification MVP simple et économique
+# Blind Test App – MVP implémenté (Node.js + WebSocket)
 
-Ce dépôt contient une proposition de **MVP blind test** pensée pour :
-- un accès mobile (Android/iOS) via navigateur,
-- une gestion en temps réel (buzzer + score),
-- une architecture Azure la plus simple possible,
-- un coût réduit sans base de données managée coûteuse.
+Prototype fonctionnel pour un blind test temps réel avec :
+- interface joueur (inscription + buzzer),
+- interface admin (création de session, start/stop, décision +1/-1),
+- classement mis à jour en direct via WebSocket,
+- stockage en mémoire (MVP).
 
-## Document principal
-- `docs/blind-test-app-plan.md`
+## Lancer le projet
 
-## Points clés
-- 10 à 100 joueurs par partie.
-- Accès via QR code.
-- Classement consultable en continu par tous les joueurs.
-- Interface administrateur pour valider/refuser les buzz (+1 / -1).
+```bash
+npm install
+npm start
+```
+
+Puis ouvrir `http://localhost:3000`.
+
+## Variables d'environnement
+- `PORT` (défaut `3000`)
+- `ADMIN_PASSWORD` (défaut `admin123`)
+
+## API disponible
+
+### HTTP
+- `POST /admin/login`
+- `POST /sessions` (admin)
+- `POST /sessions/:id/start` (admin)
+- `POST /sessions/:id/stop` (admin)
+- `POST /sessions/:id/players`
+- `POST /sessions/:id/buzz`
+- `POST /sessions/:id/decision` (admin)
+- `GET /sessions/:id/ranking`
+
+### WebSocket
+Connexion sur `ws://host:port/?sessionId=<SESSION_ID>`.
+
+Événements émis :
+- `session.started`
+- `buzz.locked`
+- `buzz.decided`
+- `ranking.updated`
+- `session.stopped`
+
+## Notes
+- Pas de persistance disque/DB : redémarrage serveur = perte des sessions.
+- Cette base couvre le MVP et peut ensuite être branchée sur Azure App Service + Static Web Apps.
