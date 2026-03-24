@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blind Test Admin</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 1rem; max-width: 900px; }
+      .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+      button { padding: .6rem 1rem; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; margin-right: .4rem; }
+      input { padding: .6rem; margin-right: .4rem; margin-bottom: .4rem; }
+      #log { font-family: monospace; font-size: .9rem; background: #f7f7f7; padding: .75rem; white-space: pre-wrap; }
+      table { width: 100%; border-collapse: collapse; }
+      td, th { border-bottom: 1px solid #eee; padding: .4rem; }
+      .stats { display: flex; gap: 1rem; }
+      .pill { background: #f2f2f2; border-radius: 999px; padding: .2rem .7rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Back-office Admin</h1>
+
+    <div class="card">
+      <h2>Gestion partie</h2>
+      <button id="createSessionBtn">Nouvelle partie</button>
+      <button id="startBtn">Lancer la partie</button>
+      <button id="stopBtn">Stop partie</button>
+      <button id="logoutBtn">Se déconnecter</button>
+      <p>Session ID: <strong id="sessionId">-</strong></p>
+      <p>Code session: <strong id="sessionCode">-</strong></p>
+      <div class="stats">
+        <span class="pill">Connectés: <strong id="connectedPlayers">0</strong></span>
+        <span class="pill">Inscrits: <strong id="registeredPlayers">0</strong></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Lancer une session musicale</h2>
+      <input id="roundTitle" placeholder="Titre" />
+      <input id="roundArtist" placeholder="Artiste" />
+      <input id="roundYear" type="number" placeholder="Année" />
+      <input id="roundYearBonus" type="number" placeholder="Bonus année" value="1" />
+      <button id="launchRoundBtn">Lancer le morceau</button>
+    </div>
+
+    <div class="card">
+      <h2>Premier buzz</h2>
+      <p>Joueur: <strong id="buzzPlayer">-</strong></p>
+      <p>Proposition: <span id="buzzProposal">-</span></p>
+      <button id="acceptBtn">Valider la réponse</button>
+      <button id="rejectBtn">Refuser la réponse</button>
+    </div>
+
+    <div class="card">
+      <h2>Classement</h2>
+      <table>
+        <thead><tr><th>Joueur</th><th>Score</th></tr></thead>
+        <tbody id="rankingBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Logs</h2>
+      <div id="log"></div>
+    </div>
+
+    <script type="module" src="/admin.js"></script>
+  </body>
+</html>
