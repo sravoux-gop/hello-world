@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 520px; }
+      .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; }
+      input { width: 100%; padding: .7rem; margin: .5rem 0; }
+      button { padding: .7rem 1rem; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
+      #error { color: #b00020; }
+    </style>
+  </head>
+  <body>
+    <h1>Interface Admin</h1>
+    <div class="card">
+      <p>Cette interface est protégée par mot de passe serveur.</p>
+      <input id="password" type="password" placeholder="Mot de passe admin" />
+      <button id="loginBtn">Se connecter</button>
+      <p id="error"></p>
+    </div>
+
+    <script>
+      document.getElementById('loginBtn').onclick = async () => {
+        const password = document.getElementById('password').value;
+        const errorEl = document.getElementById('error');
+        errorEl.textContent = '';
+
+        const response = await fetch('/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+
+        if (!response.ok) {
+          errorEl.textContent = 'Mot de passe invalide';
+          return;
+        }
+
+        location.href = '/admin';
+      };
+    </script>
+  </body>
+</html>
