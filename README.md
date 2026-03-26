@@ -108,3 +108,40 @@ Connexion sur `ws://host:port/?sessionId=<SESSION_ID>&playerId=<PLAYER_ID>`.
 - Le client joueur mémorise aussi sa session active pour reprise sur la vue Joueur et pour quitter proprement la partie.
 - Le client admin mémorise la session active pour reprise après F5/retour page.
 - Auth admin gérée côté serveur via cookie HTTP-only après login.
+
+## Déploiement Azure (PowerShell)
+
+Un script interactif et paramétrable est disponible : `scripts/deploy-azure.ps1`.
+
+### Prérequis
+
+- Azure CLI (`az`)
+- PowerShell 7+
+- Node.js / npm
+
+### Exemple (interactif)
+
+```powershell
+pwsh -File ./scripts/deploy-azure.ps1
+```
+
+### Exemple (paramétré)
+
+```powershell
+pwsh -File ./scripts/deploy-azure.ps1 \
+  -SubscriptionId "<subscription-id>" \
+  -ResourceGroup "rg-blindtest-prod" \
+  -Location "westeurope" \
+  -AppName "blindtest-prod-12345" \
+  -PlanName "asp-blindtest-prod" \
+  -Sku "B1" \
+  -Runtime "NODE:20-lts" \
+  -AdminPassword "<mot-de-passe-admin>"
+```
+
+Le script :
+- crée/met à jour le Resource Group,
+- crée/met à jour l'App Service Plan Linux,
+- crée/met à jour la Web App,
+- configure les variables d'environnement,
+- déploie l'application sur Azure App Service.
