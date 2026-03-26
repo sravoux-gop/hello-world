@@ -1,1 +1,3 @@
 node_modules
+scripts/deploy-azure.starter.ps1
+.azure/config

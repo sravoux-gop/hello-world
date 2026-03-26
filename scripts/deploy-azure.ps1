@@ -63,7 +63,7 @@ function Confirm-Action {
     return $answer -match '^(y|yes|o|oui)$'
 }
 
-function Require-Command {
+function Assert-Command {
     param([string]$Name)
 
     if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
@@ -71,10 +71,37 @@ function Require-Command {
     }
 }
 
+function Test-AzResourceGroupExists {
+    param([string]$Name)
+
+    $result = az group exists --name $Name
+    return $LASTEXITCODE -eq 0 -and $result.Trim() -eq "true"
+}
+
+function Test-AzAppServicePlanExists {
+    param(
+        [string]$Name,
+        [string]$ResourceGroup
+    )
+
+    az appservice plan show --name $Name --resource-group $ResourceGroup 1>$null 2>$null
+    return $LASTEXITCODE -eq 0
+}
+
+function Test-AzWebAppExists {
+    param(
+        [string]$Name,
+        [string]$ResourceGroup
+    )
+
+    az webapp show --name $Name --resource-group $ResourceGroup 1>$null 2>$null
+    return $LASTEXITCODE -eq 0
+}
+
 Write-Host "=== Déploiement Azure Web App (Node.js) ===" -ForegroundColor Cyan
 
-Require-Command -Name "az"
-Require-Command -Name "git"
+Assert-Command -Name "az"
+Assert-Command -Name "git"
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $repoRoot
@@ -115,14 +142,29 @@ if (-not [string]::IsNullOrWhiteSpace($SubscriptionId)) {
     az account set --subscription $SubscriptionId
 }
 
-Write-Host "Création / mise à jour du Resource Group..." -ForegroundColor Cyan
-az group create --name $ResourceGroup --location $Location | Out-Null
+if (Test-AzResourceGroupExists -Name $ResourceGroup) {
+    Write-Host "Resource Group déjà présent : $ResourceGroup" -ForegroundColor DarkGray
+}
+else {
+    Write-Host "Création du Resource Group..." -ForegroundColor Cyan
+    az group create --name $ResourceGroup --location $Location | Out-Null
+}
 
-Write-Host "Création / mise à jour du App Service Plan..." -ForegroundColor Cyan
-az appservice plan create --name $PlanName --resource-group $ResourceGroup --location $Location --sku $Sku --is-linux | Out-Null
+if (Test-AzAppServicePlanExists -Name $PlanName -ResourceGroup $ResourceGroup) {
+    Write-Host "App Service Plan déjà présent : $PlanName" -ForegroundColor DarkGray
+}
+else {
+    Write-Host "Création du App Service Plan..." -ForegroundColor Cyan
+    az appservice plan create --name $PlanName --resource-group $ResourceGroup --location $Location --sku $Sku --is-linux | Out-Null
+}
 
-Write-Host "Création / mise à jour de la Web App..." -ForegroundColor Cyan
-az webapp create --name $AppName --resource-group $ResourceGroup --plan $PlanName --runtime $Runtime | Out-Null
+if (Test-AzWebAppExists -Name $AppName -ResourceGroup $ResourceGroup) {
+    Write-Host "Web App déjà présente : $AppName" -ForegroundColor DarkGray
+}
+else {
+    Write-Host "Création de la Web App..." -ForegroundColor Cyan
+    az webapp create --name $AppName --resource-group $ResourceGroup --plan $PlanName --runtime $Runtime | Out-Null
+}
 
 Write-Host "Configuration des variables d'environnement..." -ForegroundColor Cyan
 az webapp config appsettings set --name $AppName --resource-group $ResourceGroup --settings "WEBSITE_NODE_DEFAULT_VERSION=~20" "SCM_DO_BUILD_DURING_DEPLOYMENT=true" "ADMIN_PASSWORD=$AdminPassword" | Out-Null

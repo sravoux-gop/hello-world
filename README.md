@@ -112,6 +112,7 @@ Connexion sur `ws://host:port/?sessionId=<SESSION_ID>&playerId=<PLAYER_ID>`.
 ## Déploiement Azure (PowerShell)
 
 Un script interactif et paramétrable est disponible : `scripts/deploy-azure.ps1`.
+Un script starter avec variables préremplies est aussi disponible : `scripts/deploy-azure.starter.ps1`.
 
 ### Prérequis
 
@@ -140,8 +141,17 @@ pwsh -File ./scripts/deploy-azure.ps1 \
 ```
 
 Le script :
+
 - crée/met à jour le Resource Group,
 - crée/met à jour l'App Service Plan Linux,
 - crée/met à jour la Web App,
 - configure les variables d'environnement,
 - déploie l'application sur Azure App Service.
+
+### Script starter
+
+```powershell
+pwsh -File ./scripts/deploy-azure.starter.ps1
+```
+
+Le starter centralise les variables d'environnement en haut du fichier, puis appelle `deploy-azure.ps1` avec ces paramètres.
