@@ -1,68 +1,246 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blind Test Admin</title>
-    <style>
-      body { font-family: system-ui, sans-serif; margin: 1rem; max-width: 900px; }
-      .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
-      button { padding: .6rem 1rem; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; margin-right: .4rem; }
-      input { padding: .6rem; margin-right: .4rem; margin-bottom: .4rem; }
-      #log { font-family: monospace; font-size: .9rem; background: #f7f7f7; padding: .75rem; white-space: pre-wrap; }
-      table { width: 100%; border-collapse: collapse; }
-      td, th { border-bottom: 1px solid #eee; padding: .4rem; }
-      .stats { display: flex; gap: 1rem; }
-      .pill { background: #f2f2f2; border-radius: 999px; padding: .2rem .7rem; }
-    </style>
-  </head>
-  <body>
-    <h1>Back-office Admin</h1>
-
-    <div class="card">
-      <h2>Gestion partie</h2>
-      <button id="createSessionBtn">Nouvelle partie</button>
-      <button id="startBtn">Lancer la partie</button>
-      <button id="stopBtn">Stop partie</button>
-      <button id="logoutBtn">Se déconnecter</button>
-      <p>Session ID: <strong id="sessionId">-</strong></p>
-      <p>Code session: <strong id="sessionCode">-</strong></p>
-      <div class="stats">
-        <span class="pill">Connectés: <strong id="connectedPlayers">0</strong></span>
-        <span class="pill">Inscrits: <strong id="registeredPlayers">0</strong></span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blind Test — Back-office</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <main class="container app-admin">
+    <header class="app-header">
+      <div>
+        <h1 class="app-title"><i class="bi bi-sliders2"></i> Back-office</h1>
+        <p class="app-subtitle">Supervision en temps reel de la partie</p>
       </div>
+    </header>
+
+    <div class="admin-shell">
+      <section class="admin-main">
+        <article class="app-card hidden" id="playlistSection">
+          <div class="playlist-card-head">
+            <div>
+              <h2><i class="bi bi-music-note-list"></i> Playlist musicale</h2>
+            </div>
+          </div>
+
+          <details id="manualRoundDetails" class="manual-round-panel">
+            <summary>Ajouter un morceau</summary>
+            <div class="manual-round-fields">
+              <input id="roundTitle" placeholder="Titre" />
+              <input id="roundArtist" placeholder="Artiste" />
+              <div class="actions-row">
+                <input id="roundYear" type="number" placeholder="Annee" />
+                <input id="roundYearBonus" type="number" placeholder="Bonus annee" value="1" />
+              </div>
+              <button id="addRoundBtn"><i class="bi bi-disc-fill"></i> Ajouter</button>
+            </div>
+          </details>
+
+          <div class="playlist-table-shell">
+            <table id="playlistTable" class="table-tight">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Titre</th>
+                  <th>Artiste</th>
+                  <th>Annee</th>
+                  <th>Bonus</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="playlistBody"></tbody>
+            </table>
+
+          </div>
+          <section class="playlist-panel playlist-transport-panel">
+            <div class="playlist-controls">
+              <button id="playlistPrevBtn" class="secondary"><i class="bi bi-skip-backward-fill"></i>
+                Precedente</button>
+              <button id="playlistPlayBtn"><i class="bi bi-play-fill"></i> Lecture</button>
+              <button id="playlistNextBtn" class="secondary"><i class="bi bi-skip-forward-fill"></i> Suivante</button>
+            </div>
+          </section>
+
+
+          <section class="playlist-panel playlist-management-panel">
+            <h3>Gestion de la playlist</h3>
+
+            <div class="playlist-library-row">
+              <select id="playlistLibrarySelect" aria-label="Listes CSV sur le serveur">
+                <option value="">Choisir une liste serveur</option>
+              </select>
+              <button id="playlistLoadServerBtn" class="secondary" disabled><i class="bi bi-folder2-open"></i> Charger
+                dans la session</button>
+            </div>
+            <p id="playlistLibraryStatus" class="muted">Selectionnez une playlist serveur existante puis chargez-la dans
+              la
+              session depuis la liste deroulante.</p>
+            <div class="playlist-controls">
+              <button id="playlistImportBtn" class="secondary"><i class="bi bi-upload"></i> Importer CSV</button>
+              <button id="playlistExportBtn" class="secondary"><i class="bi bi-download"></i> Exporter CSV</button>
+              <input type="file" id="csvFileInput" accept=".csv,text/csv" class="hidden" />
+            </div>
+          </section>
+
+        </article>
+
+        <button id="logoutBtn" class="secondary"><i class="bi bi-box-arrow-right"></i> Deconnexion</button>
+      </section>
+
+      <aside class="app-card admin-side-drawer" id="adminDrawer">
+        <div class="admin-drawer-toolbar">
+          <button id="drawerToggleBtn" type="button" class="secondary admin-drawer-toggle" aria-expanded="true"
+            aria-controls="adminDrawerContent" aria-label="Replier le panneau lateral"
+            title="Replier le panneau lateral">
+            <i id="drawerToggleIcon" class="bi bi-chevron-bar-right"></i>
+          </button>
+        </div>
+
+        <div class="admin-drawer-content" id="adminDrawerContent">
+          <section class="session-qr-panel hidden" id="qrSection">
+            <div class="admin-drawer-heading hidden" id="adminDrawerHeading">
+              <h3><i class="bi bi-qr-code"></i> Partie</h3>
+              <span class="status-badge waiting" id="sessionStatusBadge"><i class="bi bi-broadcast-pin"></i> En
+                attente</span>
+            </div>
+            <div class="session-overview-main">
+              <button id="createSessionBtn" title="Nouvelle partie"><i class="bi bi-plus-circle-fill"></i></button>
+              <button id="startBtn" title="Lancer la partie"><i class="bi bi-play-fill"></i></button>
+              <button id="stopBtn" class="btn-danger" title="Arreter la partie"><i class="bi bi-stop-fill"></i></button>
+              <button id="deleteSessionBtn" class="btn-danger" title="Supprimer la partie"><i
+                  class="bi bi-trash-fill"></i></button>
+            </div>
+
+            <div class="session-qr-row">
+              <div class="stats-grid">
+                <span class="stat-pill"><i class="bi bi-key-fill"></i> Session: <strong
+                    id="sessionCode">-</strong></span>
+                <span class="stat-pill"><i class="bi bi-people-fill"></i> Connectes: <strong
+                    id="connectedPlayers">0</strong> / <strong id="registeredPlayers">0</strong></span>
+              </div>
+              <div class="qr-wrap">
+                <a id="qrUrl" class="muted qr-link" target="_blank" rel="noreferrer"><img id="qrImg"
+                    alt="QR Code" /></a>
+              </div>
+            </div>
+          </section>
+
+          <section class="admin-ranking-panel hidden" id="rankingSection">
+            <div class="ranking-drawer-head">
+              <div>
+                <h2><i class="bi bi-trophy-fill"></i> Classement</h2>
+                <p class="muted">Liste des inscrits et score en direct.</p>
+              </div>
+            </div>
+            <div class="ranking-drawer-body">
+              <table id="rankingTable" class="table-tight">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Joueur</th>
+                    <th>Score</th>
+                    <th aria-label="Actions joueur"></th>
+                  </tr>
+                </thead>
+                <tbody id="rankingBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </aside>
     </div>
 
-    <div class="card">
-      <h2>Lancer une session musicale</h2>
-      <input id="roundTitle" placeholder="Titre" />
-      <input id="roundArtist" placeholder="Artiste" />
-      <input id="roundYear" type="number" placeholder="Année" />
-      <input id="roundYearBonus" type="number" placeholder="Bonus année" value="1" />
-      <button id="launchRoundBtn">Lancer le morceau</button>
-    </div>
+    <dialog id="buzzModal" class="buzz-modal">
+      <article class="buzz-modal-card">
+        <header class="buzz-modal-head">
+          <h2><i class="bi bi-lightning-charge-fill"></i> Validation du buzz</h2>
+          <p class="muted">Un joueur a buzze. Validez ou refusez sa proposition.</p>
+        </header>
 
-    <div class="card">
-      <h2>Premier buzz</h2>
-      <p>Joueur: <strong id="buzzPlayer">-</strong></p>
-      <p>Proposition: <span id="buzzProposal">-</span></p>
-      <button id="acceptBtn">Valider la réponse</button>
-      <button id="rejectBtn">Refuser la réponse</button>
-    </div>
+        <div id="currentTrackInfo" class="hidden">
+          <div class="buzz-layout">
+            <div>
+              <h3 id="currentTrackTitle">-</h3>
+              <p id="currentTrackMeta" class="muted"></p>
+              <div class="proposal-box hidden" id="buzzProposalBox">
+                <strong>Proposition du buzzeur:</strong>
+                <span id="buzzProposalText"></span>
+              </div>
+            </div>
+            <div class="buzz-player-panel hidden" id="buzzPlayerPanel">
+              <div id="buzzPlayerAvatar"></div>
+              <div class="player-name" id="buzzPlayerName"></div>
+              <div class="player-devise" id="buzzPlayerDevise"></div>
+              <div class="reaction-time" id="buzzReactionTime"></div>
+            </div>
+          </div>
+          <div id="buzzActions" class="actions-row buzz-actions-row">
+            <button id="acceptBtn" disabled><i class="bi bi-check-circle-fill"></i> Valider (+1)</button>
+            <button id="rejectBtn" class="btn-danger" disabled><i class="bi bi-x-circle-fill"></i> Refuser (-1)</button>
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Classement</h2>
-      <table>
-        <thead><tr><th>Joueur</th><th>Score</th></tr></thead>
-        <tbody id="rankingBody"></tbody>
-      </table>
-    </div>
+        <p id="noBuzzMsg" class="muted"><i class="bi bi-info-circle"></i> Aucun buzz en cours.</p>
+      </article>
+    </dialog>
 
-    <div class="card">
-      <h2>Logs</h2>
-      <div id="log"></div>
-    </div>
+    <dialog id="deletePlayerModal" class="buzz-modal">
+      <article class="buzz-modal-card delete-player-modal-card">
+        <header class="buzz-modal-head">
+          <h2><i class="bi bi-trash-fill"></i> Supprimer un joueur</h2>
+          <p id="deletePlayerSubtitle" class="muted">Confirmez la suppression de ce joueur.</p>
+        </header>
+
+        <div class="delete-player-summary">
+          <div id="deletePlayerAvatar" class="ranking-avatar"></div>
+          <div class="delete-player-copy">
+            <strong id="deletePlayerName">-</strong>
+            <p id="deletePlayerMeta" class="muted">-</p>
+          </div>
+        </div>
+
+        <div class="actions-row buzz-actions-row">
+          <button id="cancelDeletePlayerBtn" type="button" class="secondary outline">Annuler</button>
+          <button id="confirmDeletePlayerBtn" type="button" class="btn-danger">
+            <i class="bi bi-trash-fill"></i>
+            Supprimer
+          </button>
+        </div>
+      </article>
+    </dialog>
+
+    <dialog id="deleteSessionModal" class="buzz-modal">
+      <article class="buzz-modal-card delete-player-modal-card">
+        <header class="buzz-modal-head">
+          <h2><i class="bi bi-trash-fill"></i> Supprimer la partie</h2>
+          <p class="muted">Cette action est irreversible. Tous les clients connectes seront renvoyes vers l'accueil.</p>
+        </header>
+
+        <div class="delete-player-summary">
+          <div class="ranking-avatar">
+            <div class="no-avatar"><i class="bi bi-exclamation-triangle-fill"></i></div>
+          </div>
+          <div class="delete-player-copy">
+            <strong id="deleteSessionName">Session -</strong>
+            <p id="deleteSessionMeta" class="muted">La session sera retiree du serveur et ne pourra plus etre rejointe.
+            </p>
+          </div>
+        </div>
+
+        <div class="actions-row buzz-actions-row">
+          <button id="cancelDeleteSessionBtn" type="button" class="secondary outline">Annuler</button>
+          <button id="confirmDeleteSessionBtn" type="button" class="btn-danger">
+            <i class="bi bi-trash-fill"></i>
+            Supprimer la partie
+          </button>
+        </div>
+      </article>
+    </dialog>
 
     <script type="module" src="/admin.js"></script>
-  </body>
+  </main>
+</body>
 </html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Blind Test - Spectateur</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+	<link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+	<main class="container spectator-shell">
+		<header class="app-header app-header-compact">
+			<div class="app-brand">
+				<div class="brand-mark" aria-hidden="true">
+					<i class="bi bi-music-note-beamed"></i>
+				</div>
+				<h1 class="app-title">Blind Test</h1>
+			</div>
+			<a href="/" class="header-link">
+				<i class="bi bi-arrow-left"></i>
+				Accueil
+			</a>
+		</header>
+
+		<article class="app-card page-title-card">
+			<div class="title-row">
+				<div>
+					<h2 id="spectatorSubtitle">Chargement de la session...</h2>
+				</div>
+				<div class="title-badges">
+					<span id="sessionStatusBadge" class="status-badge waiting">en attente</span>
+					<span id="playerCountBadge" class="stat-pill">0 joueur(s)</span>
+				</div>
+			</div>
+			<div class="spectator-hero-body">
+				<div class="spectator-session-line">
+					<h3 class="spectator-section-title"><i class="bi bi-broadcast-pin"></i> Partie en cours</h3>
+					<p id="sessionInfoText" class="muted"></p>
+				</div>
+				<div id="sessionInfoQr" class="session-info-qr hidden">
+					<img id="spectatorQrImage" alt="QR code de la session" />
+					<p id="spectatorQrCode" class="spectator-qr-code"></p>
+				</div>
+			</div>
+		</article>
+
+		<p id="spectatorError" class="spectator-error hidden"></p>
+
+		<section id="spectatorGrid" class="spectator-grid hidden">
+			<div class="spectator-main-layout">
+				<div class="spectator-left-column">
+					<article class="app-card info-card result-card">
+						<h2><i class="bi bi-clock-history"></i> Resultats</h2>
+						<h3 id="previousRoundTitle" class="card-subtitle">Aucun resultat</h3>
+						<p id="previousRoundText" class="muted">La precedente manche n'est pas encore disponible.</p>
+						<div id="previousRoundDetails"></div>
+					</article>
+
+					<article class="app-card info-card current-round-card">
+						<h2><i class="bi bi-broadcast-pin"></i> Morceau en cours</h2>
+						<h3 id="currentRoundStatus" class="card-subtitle">En attente</h3>
+						<p id="currentRoundText" class="muted">L'admin n'a pas encore lance de morceau.</p>
+						<div id="currentRoundDetails"></div>
+					</article>
+				</div>
+
+				<article class="app-card ranking-card spectator-ranking-card">
+					<div class="ranking-drawer-head">
+						<div>
+							<h2><i class="bi bi-trophy-fill"></i> Classement</h2>
+							<p class="muted">Scores, avatars et devises en direct.</p>
+						</div>
+					</div>
+					<table class="table-tight">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Joueur</th>
+								<th>Score</th>
+							</tr>
+						</thead>
+						<tbody id="rankingBody"></tbody>
+					</table>
+				</article>
+			</div>
+		</section>
+
+		<script type="module" src="/spectator.js"></script>
+	</main>
+</body>
+</html>

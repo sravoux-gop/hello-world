@@ -1,60 +1,82 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blind Test Joueur</title>
-    <style>
-      body { font-family: system-ui, sans-serif; margin: 1rem; max-width: 800px; }
-      .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
-      button { padding: .7rem 1rem; border-radius: 6px; border: 1px solid #ccc; cursor: pointer; }
-      .buzz { font-size: 1.5rem; width: 100%; padding: 2rem; }
-      input { padding: .6rem; margin-right: .4rem; margin-bottom: .4rem; }
-      #log { font-family: monospace; font-size: .9rem; background: #f7f7f7; padding: .75rem; white-space: pre-wrap; }
-      table { width: 100%; border-collapse: collapse; }
-      td, th { border-bottom: 1px solid #eee; padding: .4rem; }
-      .status { font-weight: 700; }
-    </style>
-  </head>
-  <body>
-    <h1>Blind Test — Interface Joueur</h1>
-    <p><a href="/admin">Accéder à l'interface admin</a></p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blind Test</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <main class="container public-shell">
+    <header class="app-header app-header-compact">
+      <div class="app-brand">
+        <div class="brand-mark" aria-hidden="true">
+          <i class="bi bi-music-note-beamed"></i>
+        </div>
+        <h1 class="app-title">Blind Test</h1>
+      </div>
+    </header>
 
-    <div class="card">
-      <h2>Rejoindre la partie</h2>
-      <input id="sessionCode" placeholder="Code session" />
-      <input id="pseudo" placeholder="Pseudo unique" />
-      <button id="joinBtn">Rejoindre</button>
-      <p>Session ID: <strong id="sessionId">-</strong></p>
-      <p>Mon pseudo: <strong id="playerPseudo">-</strong></p>
-      <p>Mon player ID: <strong id="playerId">-</strong></p>
-      <p>Statut: <span class="status" id="sessionStatus">en attente</span></p>
-      <p id="winnerBox"></p>
-    </div>
+    <article class="app-card intro-card">
+      <p class="eyebrow">Accueil</p>
+      <h2>Rejoindre une partie</h2>
+      <p class="muted">Saisissez un code secret pour verifier la partie puis choisissez votre mode d'acces.</p>
+    </article>
 
-    <div class="card">
-      <h2>Réponse rapide (optionnel)</h2>
-      <input id="guessTitle" placeholder="Titre proposé" />
-      <input id="guessArtist" placeholder="Artiste proposé" />
-      <input id="guessYear" type="number" placeholder="Année proposée" />
-      <button class="buzz" id="buzzBtn">BUZZER</button>
-      <p id="decisionMessage"></p>
-    </div>
+    <article id="joinSection" class="app-card">
+      <div id="activeSessionNotice" class="active-session-box hidden">
+        <div>
+          <strong id="activeSessionLabel">Partie deja rejointe</strong>
+          <p id="activeSessionText" class="muted"></p>
+        </div>
+        <div class="active-session-actions">
+          <a id="resumePlayerLink" href="/player" class="secondary">
+            <i class="bi bi-arrow-return-right"></i>
+            Retourner sur la page joueur
+          </a>
+          <button id="leaveSessionBtn" type="button" class="secondary outline">
+            <i class="bi bi-box-arrow-left"></i>
+            Quitter la partie
+          </button>
+        </div>
+      </div>
 
-    <div class="card">
-      <h2>Classement</h2>
-      <p>Mon score: <strong id="myScore">0</strong></p>
-      <table>
-        <thead><tr><th>Joueur</th><th>Score</th></tr></thead>
-        <tbody id="rankingBody"></tbody>
-      </table>
-    </div>
+      <label for="sessionCode">Code secret</label>
+      <div class="home-code-row">
+        <input type="text" id="sessionCode" placeholder="Code session" autocomplete="off" spellcheck="false" />
+        <button id="verifyCodeBtn" class="secondary">
+          <i class="bi bi-search"></i>
+          Verifier le code
+        </button>
+      </div>
 
-    <div class="card">
-      <h2>Logs</h2>
-      <div id="log"></div>
-    </div>
+      <p id="verifyHelp" class="muted">Les boutons d'acces n'apparaissent qu'apres verification d'un code valide.</p>
+      <p id="verifyError" class="error-text"></p>
+
+      <div id="sessionMeta" class="session-meta hidden"></div>
+
+      <div id="roleChoice" class="role-grid hidden">
+        <button id="spectatorBtn" class="role-card outline" type="button">
+          <span class="role-title"><i class="bi bi-eye-fill"></i> Spectateur</span>
+          <span class="role-caption">Suivre la partie, les manches et le classement en temps reel.</span>
+        </button>
+        <button id="playerModeBtn" class="role-card" type="button">
+          <span class="role-title"><i class="bi bi-controller"></i> Joueur</span>
+          <span class="role-caption">Saisir un pseudo, enrichir votre profil et buzzer.</span>
+        </button>
+      </div>
+    </article>
+
+    <footer class="app-footer">
+      <a href="/admin" class="footer-admin-link" aria-label="Acceder a l'administration">
+        <i class="bi bi-gear"></i>
+        <span>Admin</span>
+      </a>
+    </footer>
 
     <script type="module" src="/main.js"></script>
-  </body>
+  </main>
+</body>
 </html>

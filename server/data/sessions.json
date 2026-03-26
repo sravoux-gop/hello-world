@@ -1,0 +1,433 @@
+{
+  "version": 1,
+  "savedAt": 1774541095509,
+  "sessions": [
+    {
+      "id": "2ade3396-61c7-49bb-bd44-8a12a8a1c641",
+      "code": "4BWZNI",
+      "status": "stopped",
+      "buzzLocked": true,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": {
+        "id": "c72a4e3a-f3e0-4524-aea2-3a6d08543ae6",
+        "title": "Uptown Funk",
+        "artist": "Mark Ronson ft. Bruno Mars",
+        "year": 2014,
+        "yearBonus": 0,
+        "startedAt": 1774396800881
+      },
+      "lastDecision": null,
+      "currentPlaylistLibraryId": null,
+      "playlist": [
+        {
+          "id": "03a2c83e-dccf-4fde-82e9-cd251ba19239",
+          "title": "I Gotta Feeling",
+          "artist": "Black Eyed Peas",
+          "year": 2009,
+          "yearBonus": 0
+        },
+        {
+          "id": "f64ac6e7-04f1-4672-88fe-56cdde925131",
+          "title": "Get Lucky",
+          "artist": "Daft Punk",
+          "year": 2013,
+          "yearBonus": 0
+        },
+        {
+          "id": "c72a4e3a-f3e0-4524-aea2-3a6d08543ae6",
+          "title": "Uptown Funk",
+          "artist": "Mark Ronson ft. Bruno Mars",
+          "year": 2014,
+          "yearBonus": 0
+        },
+        {
+          "id": "57ba5e51-efc4-4d4d-a681-79a2b85eecda",
+          "title": "Don't Stop the Music",
+          "artist": "Rihanna",
+          "year": 2007,
+          "yearBonus": 0
+        },
+        {
+          "id": "153ac8a0-bec4-42f4-98a4-305579cbab19",
+          "title": "Titanium",
+          "artist": "David Guetta ft. Sia",
+          "year": 2011,
+          "yearBonus": 0
+        },
+        {
+          "id": "1fe15744-97db-4f29-b84d-2998343c7fe8",
+          "title": "One More Time",
+          "artist": "Daft Punk",
+          "year": 2000,
+          "yearBonus": 0
+        },
+        {
+          "id": "62f58b76-5b6b-462e-b5ba-b6d704872aeb",
+          "title": "Can't Get You Out of My Head",
+          "artist": "Kylie Minogue",
+          "year": 2001,
+          "yearBonus": 0
+        },
+        {
+          "id": "b23297a0-bf65-4029-be0a-f127dbd7cc30",
+          "title": "Wake Me Up",
+          "artist": "Avicii",
+          "year": 2013,
+          "yearBonus": 0
+        },
+        {
+          "id": "071b82bf-ad8e-4562-9cd8-2e30246c1975",
+          "title": "Freed From Desire",
+          "artist": "Gala",
+          "year": 1996,
+          "yearBonus": 0
+        },
+        {
+          "id": "b7f51468-684a-4d26-b183-bf84e8fd25ce",
+          "title": "Show Me Love",
+          "artist": "Robin S",
+          "year": 1993,
+          "yearBonus": 0
+        },
+        {
+          "id": "23894b47-cdb5-4cbc-930b-272c69f3de82",
+          "title": "Rhythm Is a Dancer",
+          "artist": "SNAP!",
+          "year": 1992,
+          "yearBonus": 0
+        },
+        {
+          "id": "2cf0cc4b-eb29-4226-ab58-59c5fb93df05",
+          "title": "Around the World",
+          "artist": "Daft Punk",
+          "year": 1997,
+          "yearBonus": 0
+        },
+        {
+          "id": "2542a2f4-c303-4a59-831d-2d62c9bcd258",
+          "title": "Levitating",
+          "artist": "Dua Lipa",
+          "year": 2020,
+          "yearBonus": 0
+        },
+        {
+          "id": "1210265b-461b-4d29-b284-5e90009175fb",
+          "title": "Blinding Lights",
+          "artist": "The Weeknd",
+          "year": 2019,
+          "yearBonus": 0
+        },
+        {
+          "id": "0cb1b151-b68f-45b6-a01f-7644a2b79ba8",
+          "title": "Scream & Shout",
+          "artist": "will.i.am ft. Britney Spears",
+          "year": 2012,
+          "yearBonus": 0
+        },
+        {
+          "id": "2fd65e08-605c-4acb-be2c-4dd7d3e3348e",
+          "title": "What Is Love",
+          "artist": "Haddaway",
+          "year": 1993,
+          "yearBonus": 0
+        },
+        {
+          "id": "175d5f55-f958-426c-b3e3-88de2e818eb1",
+          "title": "Lady (Hear Me Tonight)",
+          "artist": "Modjo",
+          "year": 2000,
+          "yearBonus": 0
+        },
+        {
+          "id": "6ab9dc8e-32ec-4398-a72c-eacc0b11cbb1",
+          "title": "Music Sounds Better With You",
+          "artist": "Stardust",
+          "year": 1998,
+          "yearBonus": 0
+        },
+        {
+          "id": "9d696a4e-18b3-4c5e-b1ff-b63c13b9ca9d",
+          "title": "September",
+          "artist": "Earth",
+          "year": 0,
+          "yearBonus": 1978
+        },
+        {
+          "id": "dffd8742-6fe7-4aec-81d6-74d4f4157f6d",
+          "title": "I Will Survive",
+          "artist": "Gloria Gaynor",
+          "year": 1978,
+          "yearBonus": 0
+        }
+      ],
+      "currentTrackIndex": 2,
+      "players": [
+        {
+          "id": "fbc61700-d89d-4778-ad1c-48f48a713991",
+          "pseudo": "SEB",
+          "joinedAt": 1774396289348,
+          "score": 0,
+          "avatar": "data:image/jpeg;base64,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",
+          "devise": null
+        },
+        {
+          "id": "e9ae9f60-61f4-4919-a2b8-0ce67cb4f0e1",
+          "pseudo": "TOTO",
+          "joinedAt": 1774396770400,
+          "score": 0,
+          "avatar": null,
+          "devise": null
+        },
+        {
+          "id": "ab4c090b-de03-4d5e-beb6-fa4b2bd15f1d",
+          "pseudo": "Sev",
+          "joinedAt": 1774480301783,
+          "score": 0,
+          "avatar": null,
+          "devise": null
+        }
+      ]
+    },
+    {
+      "id": "b1bf103d-2a0f-4aee-99a3-d22b057d7f8b",
+      "code": "UY2ZRQ",
+      "status": "stopped",
+      "buzzLocked": true,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": null,
+      "lastDecision": null,
+      "currentPlaylistLibraryId": null,
+      "playlist": [],
+      "currentTrackIndex": -1,
+      "players": [
+        {
+          "id": "e3270b62-4923-4da4-a539-e912e5a859f2",
+          "pseudo": "Sev",
+          "joinedAt": 1774514209171,
+          "score": 0,
+          "avatar": null,
+          "devise": null
+        }
+      ]
+    },
+    {
+      "id": "f0d6efde-2ca2-498d-b4d4-1621c821970b",
+      "code": "D2JZYZ",
+      "status": "waiting",
+      "buzzLocked": false,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": null,
+      "lastDecision": null,
+      "currentPlaylistLibraryId": null,
+      "playlist": [],
+      "currentTrackIndex": -1,
+      "players": [
+        {
+          "id": "599c4150-533f-48fc-876c-3b10c52d7237",
+          "pseudo": "Sev",
+          "joinedAt": 1774517297751,
+          "score": 0,
+          "avatar": null,
+          "devise": null
+        }
+      ]
+    },
+    {
+      "id": "d69042eb-13b8-48a6-b3cc-6356bb2c0ed2",
+      "code": "5ACH3J",
+      "status": "running",
+      "buzzLocked": false,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": {
+        "id": "72282e5d-d5df-4ed5-a7e6-17827bcdc87d",
+        "title": "Freed From Desire",
+        "artist": "Gala",
+        "year": 1996,
+        "yearBonus": 0,
+        "startedAt": 1774541095508
+      },
+      "lastDecision": null,
+      "currentPlaylistLibraryId": null,
+      "playlist": [
+        {
+          "id": "0d128ba3-fe6d-4d4f-b9a6-05066f096ac2",
+          "title": "Uptown Funk",
+          "artist": "Mark Ronson ft. Bruno Mars",
+          "year": 2014,
+          "yearBonus": 0
+        },
+        {
+          "id": "84096f8a-e0c3-440e-93a9-d340daad1733",
+          "title": "I Gotta Feeling",
+          "artist": "Black Eyed Peas",
+          "year": 2009,
+          "yearBonus": 0
+        },
+        {
+          "id": "d648b28d-4040-4483-9520-d4655ac9003b",
+          "title": "Titanium",
+          "artist": "David Guetta ft. Sia",
+          "year": 2011,
+          "yearBonus": 0
+        },
+        {
+          "id": "5831885e-fb15-4168-a198-93822fb7d6d0",
+          "title": "Get Lucky",
+          "artist": "Daft Punk",
+          "year": 2013,
+          "yearBonus": 0
+        },
+        {
+          "id": "b374500e-d0b3-4c75-b43f-25adfff75fbd",
+          "title": "One More Time",
+          "artist": "Daft Punk",
+          "year": 2000,
+          "yearBonus": 0
+        },
+        {
+          "id": "3da80e3c-9b07-415f-abda-685dfbb71467",
+          "title": "Don't Stop the Music",
+          "artist": "Rihanna",
+          "year": 2007,
+          "yearBonus": 0
+        },
+        {
+          "id": "d8194cf0-6274-40db-870e-1fa678c43544",
+          "title": "Can't Get You Out of My Head",
+          "artist": "Kylie Minogue",
+          "year": 2001,
+          "yearBonus": 0
+        },
+        {
+          "id": "96749099-63ad-4dcf-86b2-b9a837c79d8f",
+          "title": "Wake Me Up",
+          "artist": "Avicii",
+          "year": 2013,
+          "yearBonus": 0
+        },
+        {
+          "id": "72282e5d-d5df-4ed5-a7e6-17827bcdc87d",
+          "title": "Freed From Desire",
+          "artist": "Gala",
+          "year": 1996,
+          "yearBonus": 0
+        },
+        {
+          "id": "87ccbbe0-dda2-48c5-a164-da4f88c8204c",
+          "title": "Show Me Love",
+          "artist": "Robin S",
+          "year": 1993,
+          "yearBonus": 0
+        },
+        {
+          "id": "000655bd-7e99-4de1-a40a-1ec3ca0738c5",
+          "title": "Rhythm Is a Dancer",
+          "artist": "SNAP!",
+          "year": 1992,
+          "yearBonus": 0
+        },
+        {
+          "id": "199a9bdd-7f33-448c-97e0-436481873ee6",
+          "title": "Around the World",
+          "artist": "Daft Punk",
+          "year": 1997,
+          "yearBonus": 0
+        },
+        {
+          "id": "a32e8095-8284-4aa8-b52c-3069c393954a",
+          "title": "Levitating",
+          "artist": "Dua Lipa",
+          "year": 2020,
+          "yearBonus": 0
+        },
+        {
+          "id": "427713f3-5fe4-49cf-8ef5-2d82b0d3092d",
+          "title": "Blinding Lights",
+          "artist": "The Weeknd",
+          "year": 2019,
+          "yearBonus": 0
+        },
+        {
+          "id": "30f492dd-3926-45fe-b8e8-a9d74e9ae40c",
+          "title": "Scream & Shout",
+          "artist": "will.i.am ft. Britney Spears",
+          "year": 2012,
+          "yearBonus": 0
+        },
+        {
+          "id": "40939c0d-93c0-4583-85b4-cdb29030b79f",
+          "title": "What Is Love",
+          "artist": "Haddaway",
+          "year": 1993,
+          "yearBonus": 0
+        },
+        {
+          "id": "6a3af6c0-bcce-46e3-80ad-6a7d8b407e3f",
+          "title": "Lady (Hear Me Tonight)",
+          "artist": "Modjo",
+          "year": 2000,
+          "yearBonus": 0
+        },
+        {
+          "id": "c06a8411-c64b-4b0a-992f-90b6efa753f3",
+          "title": "Music Sounds Better With You",
+          "artist": "Stardust",
+          "year": 1998,
+          "yearBonus": 0
+        },
+        {
+          "id": "a6c25ea4-c306-4e85-ba4c-82bd16d02803",
+          "title": "September",
+          "artist": "Earth, Wind & Fire",
+          "year": 1978,
+          "yearBonus": 0
+        },
+        {
+          "id": "d74bb733-d470-44da-a83a-7d52ac4544d1",
+          "title": "I Will Survive",
+          "artist": "Gloria Gaynor",
+          "year": 1978,
+          "yearBonus": 0
+        },
+        {
+          "id": "ce104ade-45c2-49fe-af93-bd01afdc4c3e",
+          "title": "Nouveau titre",
+          "artist": "Artiste",
+          "year": 2000,
+          "yearBonus": 0
+        }
+      ],
+      "currentTrackIndex": 8,
+      "players": [
+        {
+          "id": "a430c6c1-d168-4bb9-812c-8cbe1fc7add7",
+          "pseudo": "SEB",
+          "joinedAt": 1774522167260,
+          "score": 2,
+          "avatar": "data:image/jpeg;base64,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",
+          "devise": "L'essentiel c'est le principal"
+        },
+        {
+          "id": "4c8c14b3-f140-434b-9acc-72cc060ef9e4",
+          "pseudo": "SEB1",
+          "joinedAt": 1774534098959,
+          "score": 2,
+          "avatar": "data:image/jpeg;base64,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",
+          "devise": "L'essentiel c'est le principal"
+        },
+        {
+          "id": "c5327db8-4d81-4bc5-ab68-13f1f4558195",
+          "pseudo": "SEV",
+          "joinedAt": 1774540593769,
+          "score": -2,
+          "avatar": null,
+          "devise": null
+        }
+      ]
+    }
+  ]
+}

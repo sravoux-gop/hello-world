@@ -1,156 +1,204 @@
+import {
+  $, api, buildPlayerUrl, buildSpectatorUrl, clearActivePlayerSession, escHtml, hide, loadActivePlayerSession,
+  loadJoinPrefs, normalizeSessionCode, persistJoinPrefs, sessionCodeFromUrl, show, statusLabel
+} from '/app-shared.js';
+
 const state = {
-  sessionId: '',
-  sessionCode: '',
-  playerId: '',
-  pseudo: '',
-  ws: null
+  verifiedSessionCode: '',
+  activePlayerSession: null
 };
 
-const byId = (id) => document.getElementById(id);
-const logEl = byId('log');
+const removedByAdmin = new URLSearchParams(location.search).get('removed') === '1';
+const deletedByAdmin = new URLSearchParams(location.search).get('deleted') === '1';
 
-function log(message) {
-  logEl.textContent = `${new Date().toLocaleTimeString()} - ${message}\n${logEl.textContent}`;
-}
-
-function setStatus(status) {
-  byId('sessionStatus').textContent = status;
-}
-
-function setWinner(winner) {
-  if (!winner) {
-    byId('winnerBox').textContent = '';
+function applyTransientNotice() {
+  if (deletedByAdmin) {
+    $('verifyError').textContent = 'Cette partie a ete supprimee par l\'admin.';
     return;
   }
 
-  byId('winnerBox').textContent = `🏆 Gagnant: ${winner.displayName} (${winner.score} pts)`;
+  if (removedByAdmin) {
+    $('verifyError').textContent = 'Vous avez ete retire de la partie par l\'admin.';
+  }
 }
 
-function setDecisionMessage(payload) {
-  if (!payload) {
-    byId('decisionMessage').textContent = '';
+function renderActiveSessionNotice(activeSession, status) {
+  if (!activeSession?.sessionCode || !activeSession?.playerId) {
+    hide('activeSessionNotice');
+    $('activeSessionText').textContent = '';
+    $('resumePlayerLink').setAttribute('href', '/player');
     return;
   }
 
-  const action = payload.decision === 'accepted' ? 'validée' : 'refusée';
-  byId('decisionMessage').textContent = `Votre réponse a été ${action} (${payload.scoreDelta > 0 ? '+' : ''}${payload.scoreDelta}).`;
+  $('activeSessionText').textContent = `${activeSession.pseudo || 'Joueur'} est encore inscrit sur ${activeSession.sessionCode}. Statut: ${statusLabel(status)}`;
+  $('resumePlayerLink').setAttribute('href', buildPlayerUrl(activeSession.sessionCode));
+  show('activeSessionNotice');
 }
 
-function setRanking(ranking) {
-  const body = byId('rankingBody');
-  body.innerHTML = ranking
-    .map((entry) => `<tr><td>${entry.displayName}</td><td>${entry.score}</td></tr>`)
-    .join('');
+function resetRoleChoice() {
+  state.verifiedSessionCode = '';
+  $('sessionMeta').innerHTML = '';
+  hide('sessionMeta');
+  hide('roleChoice');
+}
 
-  const me = ranking.find((entry) => entry.id === state.playerId);
-  if (me) {
-    byId('myScore').textContent = String(me.score);
+function setSessionMeta(details) {
+  const qrMarkup = details.qrCodeDataUrl
+    ? `<div class="session-meta-qr"><img src="${details.qrCodeDataUrl}" alt="QR code de la session ${escHtml(details.code)}" /><span class="muted">Scanner pour rejoindre</span></div>`
+    : '';
+
+  $('sessionMeta').innerHTML = `
+    <div class="session-meta-layout">
+      <div>
+        <strong>${escHtml(details.name || `Session ${details.code}`)}</strong>
+        <p class="muted">${statusLabel(details.status)} · ${details.playerCount} joueur(s) inscrit(s)</p>
+      </div>
+      ${qrMarkup}
+    </div>`;
+  show('sessionMeta');
+
+  if (details.status === 'stopped') {
+    hide('roleChoice');
+    $('verifyError').textContent = 'Cette partie est terminee. Les acces joueur et spectateur sont desactives.';
+    return;
+  }
+
+  show('roleChoice');
+}
+
+async function verifySessionCode(showErrors = true) {
+  $('verifyError').textContent = '';
+  const code = normalizeSessionCode($('sessionCode').value);
+
+  if (!code) {
+    if (showErrors) {
+      $('verifyError').textContent = 'Veuillez saisir un code de session.';
+    }
+    resetRoleChoice();
+    return null;
+  }
+
+  try {
+    const details = await api(`/sessions/by-code/${encodeURIComponent(code)}`);
+    try {
+      const qrPayload = await api(`/sessions/by-code/${encodeURIComponent(details.code)}/qrcode`);
+      details.qrCodeDataUrl = qrPayload.dataUrl || '';
+    } catch {
+      details.qrCodeDataUrl = '';
+    }
+
+    state.verifiedSessionCode = details.code;
+    $('sessionCode').value = details.code;
+    persistJoinPrefs({ sessionCode: details.code });
+    setSessionMeta(details);
+    return details;
+  } catch (err) {
+    resetRoleChoice();
+    if (showErrors) {
+      $('verifyError').textContent = err.code === 'session_not_found'
+        ? 'Code session introuvable.'
+        : `Erreur : ${err.message}`;
+    }
+    return null;
   }
 }
 
-async function api(path, method = 'GET', payload) {
-  const response = await fetch(path, {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: payload ? JSON.stringify(payload) : undefined
+async function refreshActivePlayerSession() {
+  const activeSession = loadActivePlayerSession();
+  if (!activeSession) {
+    renderActiveSessionNotice(null);
+    return;
+  }
+
+  try {
+    const payload = await api(`/sessions/${activeSession.sessionId}/players/${activeSession.playerId}`);
+    state.activePlayerSession = activeSession;
+    renderActiveSessionNotice(activeSession, payload.status);
+  } catch (err) {
+    if (err.code === 'session_not_found' || err.code === 'player_not_found') {
+      clearActivePlayerSession();
+      renderActiveSessionNotice(null);
+      return;
+    }
+    renderActiveSessionNotice(activeSession, 'waiting');
+  }
+}
+
+async function leaveCurrentSession() {
+  const activeSession = loadActivePlayerSession();
+  if (!activeSession) return;
+
+  try {
+    await api(`/sessions/${activeSession.sessionId}/players/${activeSession.playerId}`, 'DELETE');
+  } catch (err) {
+    if (!['session_not_found', 'player_not_found'].includes(err.code)) {
+      throw err;
+    }
+  }
+
+  clearActivePlayerSession();
+  renderActiveSessionNotice(null);
+  if (normalizeSessionCode($('sessionCode').value) === activeSession.sessionCode) {
+    resetRoleChoice();
+  }
+}
+
+$('verifyCodeBtn').addEventListener('click', async () => {
+  await verifySessionCode(true);
+});
+
+$('sessionCode').addEventListener('input', () => {
+  state.verifiedSessionCode = '';
+  persistJoinPrefs({ sessionCode: $('sessionCode').value });
+  resetRoleChoice();
+});
+
+$('playerModeBtn').addEventListener('click', () => {
+  if (!state.verifiedSessionCode) {
+    $('verifyError').textContent = 'Veuillez verifier un code valide avant de continuer.';
+    return;
+  }
+
+  location.href = buildPlayerUrl(state.verifiedSessionCode);
+});
+
+$('spectatorBtn').addEventListener('click', () => {
+  if (!state.verifiedSessionCode) {
+    $('verifyError').textContent = 'Veuillez verifier un code valide avant de continuer.';
+    return;
+  }
+
+  location.href = buildSpectatorUrl(state.verifiedSessionCode);
+});
+
+$('leaveSessionBtn').addEventListener('click', async () => {
+  $('verifyError').textContent = '';
+  try {
+    await leaveCurrentSession();
+  } catch (err) {
+    $('verifyError').textContent = `Erreur : ${err.message}`;
+  }
+});
+
+const prefilledCode = sessionCodeFromUrl();
+const storedPrefs = loadJoinPrefs();
+const activeSession = loadActivePlayerSession();
+
+if (prefilledCode) {
+  $('sessionCode').value = prefilledCode;
+} else if (activeSession?.sessionCode) {
+  $('sessionCode').value = activeSession.sessionCode;
+} else if (storedPrefs?.sessionCode) {
+  $('sessionCode').value = storedPrefs.sessionCode;
+}
+
+refreshActivePlayerSession();
+
+if (prefilledCode) {
+  verifySessionCode(false).finally(() => {
+    applyTransientNotice();
   });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.error || 'Erreur API');
-  }
-
-  return data;
+} else {
+  $('sessionCode').focus();
+  applyTransientNotice();
 }
-
-function connectWs() {
-  if (!state.sessionId || !state.playerId) {
-    return;
-  }
-
-  const wsUrl = new URL(location.origin.replace('http', 'ws'));
-  wsUrl.searchParams.set('sessionId', state.sessionId);
-  wsUrl.searchParams.set('playerId', state.playerId);
-
-  state.ws?.close();
-  state.ws = new WebSocket(wsUrl);
-
-  state.ws.onopen = () => log('WebSocket connecté');
-  state.ws.onmessage = (event) => {
-    const { event: type, payload } = JSON.parse(event.data);
-    log(`${type}: ${JSON.stringify(payload)}`);
-
-    if (type === 'session.started') {
-      setStatus('démarrée');
-    }
-
-    if (type === 'round.started') {
-      setDecisionMessage(null);
-    }
-
-    if (type === 'ranking.updated') {
-      setRanking(payload.ranking);
-    }
-
-    if (type === 'buzz.decided' && payload.playerId === state.playerId) {
-      setDecisionMessage(payload);
-    }
-
-    if (type === 'session.stopped') {
-      setStatus('terminée');
-      setWinner(payload.winner);
-      if (payload.ranking) {
-        setRanking(payload.ranking);
-      }
-    }
-  };
-
-  state.ws.onclose = () => log('WebSocket fermé');
-}
-
-byId('joinBtn').onclick = async () => {
-  try {
-    const data = await api('/sessions/join', 'POST', {
-      code: byId('sessionCode').value,
-      pseudo: byId('pseudo').value
-    });
-
-    state.sessionId = data.sessionId;
-    state.sessionCode = data.sessionCode;
-    state.playerId = data.playerId;
-    state.pseudo = data.pseudo;
-
-    byId('sessionId').textContent = state.sessionId;
-    byId('playerId').textContent = state.playerId;
-    byId('playerPseudo').textContent = state.pseudo;
-    setStatus(data.status === 'running' ? 'démarrée' : 'en attente');
-    setWinner(null);
-
-    log(`Joueur inscrit: ${state.pseudo} (${state.playerId})`);
-    connectWs();
-
-    const ranking = await api(`/sessions/${state.sessionId}/ranking`);
-    setRanking(ranking.ranking);
-    if (ranking.winner) {
-      setWinner(ranking.winner);
-    }
-  } catch (error) {
-    log(`Erreur join: ${error.message}`);
-  }
-};
-
-byId('buzzBtn').onclick = async () => {
-  try {
-    await api(`/sessions/${state.sessionId}/buzz`, 'POST', {
-      playerId: state.playerId,
-      proposal: {
-        title: byId('guessTitle').value,
-        artist: byId('guessArtist').value,
-        year: byId('guessYear').value
-      }
-    });
-    log('Buzz envoyé');
-  } catch (error) {
-    log(`Erreur buzz: ${error.message}`);
-  }
-};

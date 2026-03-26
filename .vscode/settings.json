@@ -1,0 +1,25 @@
+{
+	"chat.tools.terminal.autoApprove": {
+		"/^node --check server/index\\.js ; echo \"OK\"$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^node --check server/index\\.js 2>&1; Write-Host \"exit:\\$LASTEXITCODE\"$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^node server/index\\.js$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"npm --prefix c:\\Projets\\Quiz\\hello-world": true,
+		"/^node c:\\\\Projets\\\\Quiz\\\\hello-world\\\\server\\\\index\\.js$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^node --check server/index\\.js$/": {
+			"approve": true,
+			"matchCommandLine": true
+		}
+	}
+}
