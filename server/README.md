@@ -64,6 +64,9 @@ Le point d'entree applicatif est [index.js](c:/Projets/Quiz/hello-world/server/i
   - gestion des groupes de sockets,
   - diffusion des evenements,
   - synchronisation initiale a la connexion.
+- [services/llm-answer-validator.js](c:/Projets/Quiz/hello-world/server/services/llm-answer-validator.js)
+  - validation automatique d'une reponse en texte libre via LLM,
+  - retour JSON strict (verdict + confiance + checks) exploitable cote serveur.
 
 ### Utilitaires
 
@@ -118,6 +121,9 @@ node --check server/index.js
 
 - `PORT` : port HTTP du serveur, par defaut `3000`
 - `ADMIN_PASSWORD` : mot de passe admin, par defaut `admin123`
+- `OPENAI_API_KEY` : cle API pour activer la validation IA des buzz
+- `ANSWER_VALIDATION_MODEL` : modele OpenAI utilise (defaut `gpt-4.1-mini`)
+- `ANSWER_VALIDATION_TIMEOUT_MS` : timeout HTTP de validation IA (defaut `8000`)
 
 ## Contrats a preserver
 

@@ -16,3 +16,7 @@ export const DEFAULT_PORT = Number(process.env.PORT) || 3000;
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 export const AVATAR_MAX_BASE64 = 300 * 1024;
 export const PLAYLIST_UPLOAD_MAX_TEXT = 500 * 1024;
+
+export const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+export const ANSWER_VALIDATION_MODEL = process.env.ANSWER_VALIDATION_MODEL || 'gpt-4.1-mini';
+export const ANSWER_VALIDATION_TIMEOUT_MS = Number(process.env.ANSWER_VALIDATION_TIMEOUT_MS) || 8000;
