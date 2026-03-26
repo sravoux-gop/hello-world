@@ -46,7 +46,7 @@ persistenceService.loadPersistedSessions();
 persistenceService.loadPlaylistLibraryFromDisk();
 
 app.use(express.json({ limit: '500kb' }));
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(PUBLIC_DIR, { index: false }));
 
 app.use(createPageRoutes({ publicDir: PUBLIC_DIR, viewsDir: VIEWS_DIR, authService }));
 app.use(createAdminAuthRoutes({ authService, adminPassword: ADMIN_PASSWORD }));

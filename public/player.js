@@ -163,7 +163,7 @@ function setStatus(status) {
 	$('sessionStatus').className = `status-badge ${status}`;
 	$('roundHint').textContent = status === 'running'
 		? state.currentRoundActive
-			? 'Lecture en cours: le buzz est temporairement bloque.'
+			? 'Lecture en cours: le buzz est disponible.'
 			: 'Session demarree. Le buzz reste en attente du prochain morceau.'
 		: status === 'stopped'
 			? 'La partie est terminee.'
@@ -173,10 +173,10 @@ function setStatus(status) {
 
 function updateBuzzButton() {
 	const buzzBtn = $('buzzBtn');
-	const disabled = !(state.sessionStatus === 'running' && state.buzzPhase === null && !state.currentRoundActive);
+	const disabled = !(state.sessionStatus === 'running' && state.buzzPhase === null && state.currentRoundActive);
 	buzzBtn.disabled = disabled;
-	buzzBtn.classList.toggle('buzz-btn-blocked', state.currentRoundActive);
-	buzzBtn.innerHTML = state.currentRoundActive
+	buzzBtn.classList.toggle('buzz-btn-blocked', disabled);
+	buzzBtn.innerHTML = disabled
 		? '<i class="bi bi-pause-circle-fill"></i> BUZZ BLOQUE'
 		: '<i class="bi bi-bell-fill"></i> BUZZER';
 }
@@ -293,7 +293,7 @@ async function restoreExistingPlayer(activeSession) {
 	revealPlayerUi();
 	connectWs();
 	const ranking = await api(`/sessions/${state.sessionId}/ranking`);
-	state.currentRoundActive = payload.status === 'running';
+	state.currentRoundActive = Boolean(payload.currentRound);
 	setStatus(payload.status);
 	setRanking(ranking.ranking || []);
 	setWinner(ranking.winner || null);

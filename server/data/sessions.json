@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "savedAt": 1774541095509,
+  "savedAt": 1774565368889,
   "sessions": [
     {
       "id": "2ade3396-61c7-49bb-bd44-8a12a8a1c641",
@@ -424,6 +424,170 @@
           "pseudo": "SEV",
           "joinedAt": 1774540593769,
           "score": -2,
+          "avatar": null,
+          "devise": null
+        }
+      ]
+    },
+    {
+      "id": "73f3c048-90be-4862-9dd3-f1acd2b1caf0",
+      "code": "4LHSFV",
+      "status": "running",
+      "buzzLocked": true,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": null,
+      "lastDecision": null,
+      "currentPlaylistLibraryId": "984b8764-093a-466c-a31f-bca3b147ed3c",
+      "playlist": [
+        {
+          "id": "9abbe597-d854-44ac-82f2-7bc5a1c3e178",
+          "title": "I Gotta Feeling",
+          "artist": "Black Eyed Peas",
+          "year": 2009,
+          "yearBonus": 0
+        },
+        {
+          "id": "e28b6642-d457-4695-a4be-c4266cd5b9be",
+          "title": "Get Lucky",
+          "artist": "Daft Punk",
+          "year": 2013,
+          "yearBonus": 0
+        },
+        {
+          "id": "eb7a6f36-2377-4781-97f3-99533d438bf4",
+          "title": "Uptown Funk",
+          "artist": "Mark Ronson ft. Bruno Mars",
+          "year": 2014,
+          "yearBonus": 0
+        },
+        {
+          "id": "7f591663-9404-48fc-9735-5b47b9bbdb81",
+          "title": "Don't Stop the Music",
+          "artist": "Rihanna",
+          "year": 2007,
+          "yearBonus": 0
+        },
+        {
+          "id": "6a9b6791-c5bb-4dd1-aa30-8cae85f465d9",
+          "title": "Titanium",
+          "artist": "David Guetta ft. Sia",
+          "year": 2011,
+          "yearBonus": 0
+        },
+        {
+          "id": "52086afa-0cae-4789-af79-c325d906df2f",
+          "title": "One More Time",
+          "artist": "Daft Punk",
+          "year": 2000,
+          "yearBonus": 0
+        },
+        {
+          "id": "3e8daf93-780d-4446-9917-202f7ab2913d",
+          "title": "Can't Get You Out of My Head",
+          "artist": "Kylie Minogue",
+          "year": 2001,
+          "yearBonus": 0
+        },
+        {
+          "id": "3c38918c-47f3-4e45-a68a-f931611bf34b",
+          "title": "Wake Me Up",
+          "artist": "Avicii",
+          "year": 2013,
+          "yearBonus": 0
+        },
+        {
+          "id": "f8542b06-e53c-4a4c-ba2f-762c16c45f30",
+          "title": "Freed From Desire",
+          "artist": "Gala",
+          "year": 1996,
+          "yearBonus": 0
+        },
+        {
+          "id": "1c47a7be-3056-4f81-94a5-28baf3285c91",
+          "title": "Show Me Love",
+          "artist": "Robin S",
+          "year": 1993,
+          "yearBonus": 0
+        },
+        {
+          "id": "aeee2b73-b760-455c-a6a1-6fa051ff88fd",
+          "title": "Rhythm Is a Dancer",
+          "artist": "SNAP!",
+          "year": 1992,
+          "yearBonus": 0
+        },
+        {
+          "id": "b1b6f219-76aa-4b6b-afb8-9c37d2edfa42",
+          "title": "Around the World",
+          "artist": "Daft Punk",
+          "year": 1997,
+          "yearBonus": 0
+        },
+        {
+          "id": "ff6d33c4-8109-4e16-8aaf-2362dc7d3fa0",
+          "title": "Levitating",
+          "artist": "Dua Lipa",
+          "year": 2020,
+          "yearBonus": 0
+        },
+        {
+          "id": "ba3be09e-06cc-4021-a5ae-2422ca2ee283",
+          "title": "Blinding Lights",
+          "artist": "The Weeknd",
+          "year": 2019,
+          "yearBonus": 0
+        },
+        {
+          "id": "93481417-c3bd-46be-997e-d1fd757721d6",
+          "title": "Scream & Shout",
+          "artist": "will.i.am ft. Britney Spears",
+          "year": 2012,
+          "yearBonus": 0
+        },
+        {
+          "id": "420eb5f1-232c-4610-b3ad-8a9648a53646",
+          "title": "What Is Love",
+          "artist": "Haddaway",
+          "year": 1993,
+          "yearBonus": 0
+        },
+        {
+          "id": "b7d8282d-fc98-4d7b-85d7-42007b106c0f",
+          "title": "Lady (Hear Me Tonight)",
+          "artist": "Modjo",
+          "year": 2000,
+          "yearBonus": 0
+        },
+        {
+          "id": "fa5ae13a-2b51-4fa9-8bfd-919b257ed58f",
+          "title": "Music Sounds Better With You",
+          "artist": "Stardust",
+          "year": 1998,
+          "yearBonus": 0
+        },
+        {
+          "id": "12eb492a-be7d-4aa2-b548-361d5f28f533",
+          "title": "September",
+          "artist": "Earth, Wind & Fire",
+          "year": 1978,
+          "yearBonus": 0
+        },
+        {
+          "id": "7bb0ee1b-3531-41a4-9d4d-d8eb17098a9a",
+          "title": "I Will Survive",
+          "artist": "Gloria Gaynor",
+          "year": 1978,
+          "yearBonus": 0
+        }
+      ],
+      "currentTrackIndex": -1,
+      "players": [
+        {
+          "id": "3281019d-bf06-4de7-b619-0a6822a89c12",
+          "pseudo": "SEB",
+          "joinedAt": 1774564610905,
+          "score": 0,
           "avatar": null,
           "devise": null
         }

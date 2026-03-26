@@ -32,10 +32,10 @@
           <p id="activeSessionText" class="muted"></p>
         </div>
         <div class="active-session-actions">
-          <a id="resumePlayerLink" href="/player" class="secondary">
+          <button id="resumePlayerLink" class="secondary" onclick="location.href='player'">
             <i class="bi bi-arrow-return-right"></i>
-            Retourner sur la page joueur
-          </a>
+            Reprendre la partie
+          </button>
           <button id="leaveSessionBtn" type="button" class="secondary outline">
             <i class="bi bi-box-arrow-left"></i>
             Quitter la partie
@@ -53,7 +53,7 @@
       </div>
 
       <p id="verifyHelp" class="muted">Les boutons d'acces n'apparaissent qu'apres verification d'un code valide.</p>
-      <p id="verifyError" class="error-text"></p>
+      <p id="verifyError" class="error-text hidden"></p>
 
       <div id="sessionMeta" class="session-meta hidden"></div>
 

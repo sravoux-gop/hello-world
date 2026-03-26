@@ -107,14 +107,15 @@ function formatRoundMeta(round) {
 
 function renderHeader() {
 	const title = state.sessionName || `Session ${state.sessionCode}`;
-	$('spectatorSubtitle').textContent = `${title} (${state.sessionCode})`;
+	$('spectatorSubtitle').textContent = title;
 	$('playerCountBadge').textContent = `${state.connectedPlayers} connecte(s) / ${state.registeredPlayers} joueur(s)`;
 	setStatusBadge(state.status);
-	$('sessionInfoText').textContent = `Code ${state.sessionCode} · ${statusLabel(state.status)} · ${state.connectedPlayers} connecte(s) / ${state.registeredPlayers} inscrit(s)`;
+	$('sessionInfoText').textContent = state.qrDataUrl
+		? 'Scannez le QR code pour rejoindre la partie.'
+		: 'Le QR code apparaitra ici des qu\'il sera disponible pour les spectateurs.';
 
 	if (state.qrDataUrl) {
 		$('spectatorQrImage').src = state.qrDataUrl;
-		$('spectatorQrCode').textContent = state.sessionCode;
 		show('sessionInfoQr');
 	} else {
 		hide('sessionInfoQr');

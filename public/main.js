@@ -14,11 +14,13 @@ const deletedByAdmin = new URLSearchParams(location.search).get('deleted') === '
 function applyTransientNotice() {
   if (deletedByAdmin) {
     $('verifyError').textContent = 'Cette partie a ete supprimee par l\'admin.';
+    show('verifyError');
     return;
   }
 
   if (removedByAdmin) {
     $('verifyError').textContent = 'Vous avez ete retire de la partie par l\'admin.';
+    show('verifyError');
   }
 }
 
@@ -60,6 +62,7 @@ function setSessionMeta(details) {
   if (details.status === 'stopped') {
     hide('roleChoice');
     $('verifyError').textContent = 'Cette partie est terminee. Les acces joueur et spectateur sont desactives.';
+    show('verifyError');
     return;
   }
 
@@ -73,6 +76,7 @@ async function verifySessionCode(showErrors = true) {
   if (!code) {
     if (showErrors) {
       $('verifyError').textContent = 'Veuillez saisir un code de session.';
+      show('verifyError');
     }
     resetRoleChoice();
     return null;
@@ -98,6 +102,7 @@ async function verifySessionCode(showErrors = true) {
       $('verifyError').textContent = err.code === 'session_not_found'
         ? 'Code session introuvable.'
         : `Erreur : ${err.message}`;
+      show('verifyError');
     }
     return null;
   }
@@ -156,6 +161,7 @@ $('sessionCode').addEventListener('input', () => {
 $('playerModeBtn').addEventListener('click', () => {
   if (!state.verifiedSessionCode) {
     $('verifyError').textContent = 'Veuillez verifier un code valide avant de continuer.';
+    show('verifyError');
     return;
   }
 
@@ -165,6 +171,7 @@ $('playerModeBtn').addEventListener('click', () => {
 $('spectatorBtn').addEventListener('click', () => {
   if (!state.verifiedSessionCode) {
     $('verifyError').textContent = 'Veuillez verifier un code valide avant de continuer.';
+    show('verifyError');
     return;
   }
 
@@ -173,10 +180,12 @@ $('spectatorBtn').addEventListener('click', () => {
 
 $('leaveSessionBtn').addEventListener('click', async () => {
   $('verifyError').textContent = '';
+  hide('verifyError');
   try {
     await leaveCurrentSession();
   } catch (err) {
     $('verifyError').textContent = `Erreur : ${err.message}`;
+    show('verifyError');
   }
 });
 

@@ -1,6 +1,6 @@
 import path from 'node:path';
 import express from 'express';
-import { sendPublicView } from '../utils/http.js';
+import { sendHtmlView, sendPublicView } from '../utils/http.js';
 
 export function createPageRoutes({ publicDir, viewsDir, authService }) {
 	const router = express.Router();
@@ -23,7 +23,7 @@ export function createPageRoutes({ publicDir, viewsDir, authService }) {
 
 	router.get('/admin', (req, res) => {
 		const view = authService.isAuthenticated(req) ? 'admin.html' : 'admin-login.html';
-		res.sendFile(path.join(viewsDir, view));
+		sendHtmlView(res, path.join(viewsDir, view));
 	});
 
 	return router;

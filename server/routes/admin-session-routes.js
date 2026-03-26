@@ -12,7 +12,7 @@ export function createAdminSessionRoutes({
 }) {
 	const router = express.Router();
 
-	router.use(authService.mustBeAdmin);
+	router.use('/admin/api', authService.mustBeAdmin);
 
 	router.post('/admin/api/sessions', (_req, res) => {
 		const session = gameService.createSession();

@@ -1,4 +1,34 @@
+import fs from 'node:fs';
 import path from 'node:path';
+import { ROOT_DIR } from '../config.js';
+
+const PACKAGE_JSON_PATH = path.join(ROOT_DIR, 'package.json');
+const APP_VERSION = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf8')).version;
+
+function injectAppVersion(html) {
+  const versionMarkup = `<div class="app-version-badge" aria-label="Version de l'application">v${APP_VERSION}</div>`;
+
+  if (html.includes('app-version-badge')) {
+    return html;
+  }
+
+  if (html.includes('</body>')) {
+    return html.replace('</body>', `  ${versionMarkup}\n</body>`);
+  }
+
+  return `${html}\n${versionMarkup}`;
+}
+
+export function sendHtmlView(res, filePath) {
+  fs.readFile(filePath, 'utf8', (error, html) => {
+    if (error) {
+      res.sendStatus(404);
+      return;
+    }
+
+    res.type('html').send(injectAppVersion(html));
+  });
+}
 
 export function getSession(req, res, sessions) {
   const session = sessions.get(req.params.id);
@@ -21,5 +51,5 @@ export function getJoinUrl(req, session) {
 }
 
 export function sendPublicView(res, publicDir, fileName) {
-  res.sendFile(path.join(publicDir, fileName));
+  sendHtmlView(res, path.join(publicDir, fileName));
 }

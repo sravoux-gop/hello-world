@@ -12,7 +12,7 @@ import { uuid } from '../utils/ids.js';
 export function createAdminPlaylistRoutes({ authService, persistenceService, state }) {
 	const router = express.Router();
 
-	router.use(authService.mustBeAdmin);
+	router.use('/admin/api', authService.mustBeAdmin);
 
 	router.get('/admin/api/playlists/library', (_req, res) => {
 		res.json({ playlists: persistenceService.sortPlaylistLibrary() });

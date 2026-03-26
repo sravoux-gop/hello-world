@@ -61,6 +61,7 @@ export function createPublicSessionRoutes({ state }) {
 			sessionId: session.id,
 			sessionCode: session.code,
 			status: session.status,
+			currentRound: session.currentRound ?? null,
 			player: serializePlayer(player, true)
 		});
 	});

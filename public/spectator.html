@@ -24,23 +24,20 @@
 		</header>
 
 		<article class="app-card page-title-card">
-			<div class="title-row">
-				<div>
-					<h2 id="spectatorSubtitle">Chargement de la session...</h2>
-				</div>
-				<div class="title-badges">
-					<span id="sessionStatusBadge" class="status-badge waiting">en attente</span>
-					<span id="playerCountBadge" class="stat-pill">0 joueur(s)</span>
-				</div>
-			</div>
 			<div class="spectator-hero-body">
-				<div class="spectator-session-line">
-					<h3 class="spectator-section-title"><i class="bi bi-broadcast-pin"></i> Partie en cours</h3>
-					<p id="sessionInfoText" class="muted"></p>
-				</div>
 				<div id="sessionInfoQr" class="session-info-qr hidden">
 					<img id="spectatorQrImage" alt="QR code de la session" />
-					<p id="spectatorQrCode" class="spectator-qr-code"></p>
+				</div>
+				<div class="spectator-session-line">
+					<div class="spectator-title-block">
+						<h2 id="spectatorSubtitle">Chargement de la session...</h2>
+					</div>
+					<h3 class="spectator-section-title"><i class="bi bi-broadcast-pin"></i> Partie en cours</h3>
+					<p id="sessionInfoText" class="muted">Preparation de la session spectateur...</p>
+					<div class="title-badges spectator-title-badges">
+						<span id="sessionStatusBadge" class="status-badge waiting">en attente</span>
+						<span id="playerCountBadge" class="stat-pill">0 joueur(s)</span>
+					</div>
 				</div>
 			</div>
 		</article>
