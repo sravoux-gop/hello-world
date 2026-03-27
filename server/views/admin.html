@@ -15,6 +15,11 @@
         <h1 class="app-title"><i class="bi bi-sliders2"></i> Back-office</h1>
         <p class="app-subtitle">Supervision en temps reel de la partie</p>
       </div>
+      <div class="admin-controls">
+        <button id="changePasswordBtn" class="secondary" title="Changer le mot de passe"><i
+            class="bi bi-key-fill"></i></button>
+        <button id="logoutBtn" class="secondary" title="Deconnexion"><i class="bi bi-box-arrow-right"></i></button>
+      </div>
     </header>
 
     <div class="admin-shell">
@@ -86,8 +91,6 @@
           </section>
 
         </article>
-
-        <button id="logoutBtn" class="secondary"><i class="bi bi-box-arrow-right"></i> Deconnexion</button>
       </section>
 
       <aside class="app-card admin-side-drawer" id="adminDrawer">
@@ -235,6 +238,30 @@
           <button id="confirmDeleteSessionBtn" type="button" class="btn-danger">
             <i class="bi bi-trash-fill"></i>
             Supprimer la partie
+          </button>
+        </div>
+      </article>
+    </dialog>
+
+    <dialog id="changePasswordModal" class="buzz-modal">
+      <article class="buzz-modal-card">
+        <header class="buzz-modal-head">
+          <h2><i class="bi bi-key-fill"></i> Changer le mot de passe</h2>
+          <p class="muted">Entrez votre ancien mot de passe et choisissez un nouveau.</p>
+        </header>
+
+        <div class="change-password-form">
+          <input id="changePasswordOld" type="password" placeholder="Ancien mot de passe" />
+          <input id="changePasswordNew" type="password" placeholder="Nouveau mot de passe" />
+          <input id="changePasswordConfirm" type="password" placeholder="Confirmer le nouveau mot de passe" />
+          <p id="changePasswordError" class="muted hidden"></p>
+        </div>
+
+        <div class="actions-row buzz-actions-row">
+          <button id="cancelChangePasswordBtn" type="button" class="secondary outline">Annuler</button>
+          <button id="confirmChangePasswordBtn" type="button">
+            <i class="bi bi-check-circle-fill"></i>
+            Changer
           </button>
         </div>
       </article>

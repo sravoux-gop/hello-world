@@ -49,6 +49,15 @@ export function createGameService({ state, persistSessionsToDisk, broadcast, bui
 		return { winner, ranking };
 	}
 
+	function deleteSession(session) {
+		broadcast(session.id, 'session.deleted', { sessionId: session.id });
+		state.sessions.delete(session.id);
+		if (state.sessionSockets instanceof Map) {
+			state.sessionSockets.delete(session.id);
+		}
+		persistSessionsToDisk();
+	}
+
 	function startRound(session, roundData) {
 		const startedAt = Date.now();
 		session.currentRound = {
@@ -202,6 +211,7 @@ export function createGameService({ state, persistSessionsToDisk, broadcast, bui
 		createSession,
 		startSession,
 		stopSession,
+		deleteSession,
 		startRound,
 		launchTrack,
 		pauseTrack,

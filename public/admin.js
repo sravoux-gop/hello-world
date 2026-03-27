@@ -116,8 +116,11 @@ async function api(path, method = 'GET', payload) {
 		headers: { 'Content-Type': 'application/json' },
 		body: payload ? JSON.stringify(payload) : undefined
 	});
-	const data = await response.json();
-	if (!response.ok) throw Object.assign(new Error(data.error ?? 'api_error'), { code: data.error });
+	const contentType = response.headers.get('content-type') ?? '';
+	const data = contentType.includes('application/json')
+		? await response.json()
+		: { error: 'http_error', message: await response.text() };
+	if (!response.ok) throw Object.assign(new Error(data.error ?? data.message ?? 'api_error'), { code: data.error });
 	return data;
 }
 
@@ -148,17 +151,19 @@ function setSessionStatus(status = 'waiting') {
 	state.sessionStatus = status;
 	const badge = $('sessionStatusBadge');
 	const isRunning = status === 'running';
-	const isStopped = status === 'stopped';
 	const hasSession = Boolean(state.sessionId);
 	const canCreate = !hasSession;
 	const canStart = hasSession && !isRunning;
 	const canStop = hasSession && isRunning;
-	const canDelete = hasSession && isStopped;
+	const canDelete = hasSession && !isRunning;
+	const shell = document.querySelector('.admin-shell');
 	const config = {
 		waiting: { label: 'En attente', className: 'waiting', icon: 'bi-hourglass-split' },
 		stopped: { label: 'Arretee', className: 'stopped', icon: 'bi-stop-circle-fill' },
 		running: { label: 'En cours', className: 'running', icon: 'bi-play-circle-fill' }
 	}[status] ?? { label: 'En attente', className: 'waiting', icon: 'bi-hourglass-split' };
+
+	shell?.classList.toggle('admin-shell-empty', !hasSession);
 
 	badge.className = `status-badge ${config.className}`;
 	badge.innerHTML = `<i class="bi ${config.icon}"></i> ${config.label}`;
@@ -1266,6 +1271,72 @@ $('confirmDeleteSessionBtn').onclick = async () => {
 	} finally {
 		state.deletingSession = false;
 		setSessionStatus(state.sessionStatus);
+	}
+};
+
+// -- Change Password ---------------------------------------------------------
+$('changePasswordBtn').onclick = () => {
+	$('changePasswordOld').value = '';
+	$('changePasswordNew').value = '';
+	$('changePasswordConfirm').value = '';
+	$('changePasswordError').textContent = '';
+	$('changePasswordError').className = 'muted hidden';
+	$('changePasswordModal').showModal();
+};
+
+$('cancelChangePasswordBtn').onclick = () => {
+	$('changePasswordModal').close();
+};
+
+$('confirmChangePasswordBtn').onclick = async () => {
+	const oldPassword = $('changePasswordOld').value?.trim();
+	const newPassword = $('changePasswordNew').value?.trim();
+	const confirmPassword = $('changePasswordConfirm').value?.trim();
+	const errorEl = $('changePasswordError');
+
+	errorEl.className = 'muted hidden';
+	errorEl.textContent = '';
+
+	// Validation
+	if (!oldPassword || !newPassword || !confirmPassword) {
+		errorEl.className = 'error';
+		errorEl.textContent = 'Tous les champs sont obligatoires.';
+		return;
+	}
+
+	if (newPassword !== confirmPassword) {
+		errorEl.className = 'error';
+		errorEl.textContent = 'Les nouveaux mots de passe ne correspondent pas.';
+		return;
+	}
+
+	if (newPassword.length < 1) {
+		errorEl.className = 'error';
+		errorEl.textContent = 'Le nouveau mot de passe ne peut pas être vide.';
+		return;
+	}
+
+	try {
+		await api('/admin/api/change-password', 'POST', {
+			oldPassword,
+			newPassword
+		});
+
+		errorEl.className = 'success';
+		errorEl.textContent = 'Mot de passe changé avec succès.';
+
+		setTimeout(() => {
+			$('changePasswordModal').close();
+		}, 1500);
+	} catch (err) {
+		errorEl.className = 'error';
+		if (err.code === 'invalid_old_password') {
+			errorEl.textContent = 'L\'ancien mot de passe est incorrect.';
+		} else if (err.code === 'missing_fields') {
+			errorEl.textContent = 'Des champs sont manquants.';
+		} else {
+			errorEl.textContent = `Erreur: ${err.message}`;
+		}
 	}
 };
 

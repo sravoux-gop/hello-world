@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "savedAt": 1774565368889,
+  "savedAt": 1774605526343,
   "sessions": [
     {
       "id": "2ade3396-61c7-49bb-bd44-8a12a8a1c641",
@@ -592,6 +592,34 @@
           "devise": null
         }
       ]
+    },
+    {
+      "id": "7b246d34-9f66-4832-9933-63ed2292415b",
+      "code": "MOV9N0",
+      "status": "stopped",
+      "buzzLocked": true,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": null,
+      "lastDecision": null,
+      "currentPlaylistLibraryId": null,
+      "playlist": [],
+      "currentTrackIndex": -1,
+      "players": []
+    },
+    {
+      "id": "c124b907-508b-42ca-a5b5-8c4b142d4143",
+      "code": "PEDZKX",
+      "status": "waiting",
+      "buzzLocked": false,
+      "currentBuzzPlayerId": null,
+      "currentBuzzProposal": null,
+      "currentRound": null,
+      "lastDecision": null,
+      "currentPlaylistLibraryId": null,
+      "playlist": [],
+      "currentTrackIndex": -1,
+      "players": []
     }
   ]
 }

@@ -81,6 +81,19 @@ export function createAdminSessionRoutes({
 		res.json({ ok: true, status: session.status, winner });
 	});
 
+	router.delete('/admin/api/sessions/:id', (req, res) => {
+		const session = getSession(req, res, state.sessions);
+		if (!session) return;
+
+		if (session.status === 'running') {
+			return res.status(409).json({ error: 'session_running' });
+		}
+
+		gameService.deleteSession(session);
+
+		res.json({ ok: true, id: session.id });
+	});
+
 	router.post('/admin/api/sessions/:id/rounds', (req, res) => {
 		const session = getSession(req, res, state.sessions);
 		if (!session) return;

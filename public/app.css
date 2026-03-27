@@ -854,6 +854,16 @@ button.role-card {
   transition: grid-template-columns 220ms ease;
 }
 
+.admin-shell.admin-shell-empty {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+.admin-shell.admin-shell-empty .admin-side-drawer {
+  width: min(100%, var(--admin-drawer-width));
+  border-radius: 1.05rem;
+}
+
 .admin-shell.admin-shell-drawer-collapsed {
   --admin-drawer-width: 3.4rem;
 }
@@ -884,6 +894,11 @@ button.role-card {
 .admin-shell:not(.admin-shell-drawer-collapsed) .admin-side-drawer {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.admin-shell.admin-shell-empty:not(.admin-shell-drawer-collapsed) .admin-side-drawer {
+  border-top-left-radius: 1.05rem;
+  border-bottom-left-radius: 1.05rem;
 }
 
 .session-overview-card,
@@ -1488,6 +1503,48 @@ button.role-card {
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+/* Admin controls */
+.admin-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.admin-controls button {
+  padding: 0.5rem 0.75rem;
+  min-width: auto;
+}
+
+.change-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.change-password-form input {
+  width: 100%;
+}
+
+#changePasswordError {
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+}
+
+#changePasswordError.error {
+  background-color: rgba(180, 35, 24, 0.1);
+  color: var(--color-danger);
+  display: block;
+}
+
+#changePasswordError.success {
+  background-color: rgba(21, 128, 61, 0.1);
+  color: var(--color-success);
+  display: block;
 }
 
 .ranking-avatar {

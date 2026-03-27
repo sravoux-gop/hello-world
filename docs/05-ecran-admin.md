@@ -21,6 +21,8 @@ L'ecran Admin pilote la session de jeu, la playlist, les joueurs et les decision
 5. Traiter les buzz en temps reel.
 6. Arrêter la session et provoquer la bascule vers la fin de partie.
 7. Supprimer explicitement une session existante.
+8. Changer le mot de passe de l'administrateur.
+9. Permettre la déconnexion de l'administrateur.
 
 ## Sous-ecrans concernes
 
@@ -57,6 +59,17 @@ L'ecran Admin pilote la session de jeu, la playlist, les joueurs et les decision
 - Import et export CSV
 - Chargement depuis la bibliotheque serveur
 
+### Bloc controle admin (top-right)
+
+- Icone de déconnexion (logout)
+- Icone pour ouvrir la modale de changement de mot de passe
+- Modale de changement de mot de passe avec:
+  - Champ pour l'ancien mot de passe (pour verification)
+  - Champ pour le nouveau mot de passe
+  - Champ pour confirmer le nouveau mot de passe
+  - Message d'erreur/succes
+  - Boutons Annuler et Confirmer
+
 ## Regles de gestion
 
 1. Sans authentification valide, la route `/admin` affiche l'ecran de connexion.
@@ -86,6 +99,10 @@ L'ecran Admin pilote la session de jeu, la playlist, les joueurs et les decision
 25. La telecommande playlist ne doit etre activee que si la session est demarree (`status = running`).
 26. Une session `running` sans lecture en cours doit etre clairement differenciee d'une session `running` avec morceau en cours.
 27. Si l'admin supprime la session, tous les clients publics connectes sont rediriges vers l'accueil et la session disparait du serveur.
+28. La déconnexion appelle `POST /admin/logout` et redirige vers l'ecran de connexion.
+29. Le changement du mot de passe appelle `POST /admin/api/change-password` avec l'ancien et le nouveau mot de passe.
+30. Le changement de mot de passe verifie que l'ancien mot de passe est correct avant de le mettre a jour.
+31. Le changement de mot de passe doit afficher un message de succes ou d'erreur et fermer la modale apres succes.
 
 ## Matrice d'etat admin
 
