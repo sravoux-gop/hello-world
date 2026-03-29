@@ -49,6 +49,9 @@ Les specifications ecran par ecran sont disponibles dans [docs](c:/Projets/Quiz/
 
 - `PORT` (défaut `3000`)
 - `ADMIN_PASSWORD` (défaut `admin123`)
+- `OPENAI_API_KEY` (active la validation auto par IA)
+- `ANSWER_VALIDATION_MODEL` (défaut `gpt-4.1-mini`)
+- `ANSWER_VALIDATION_TIMEOUT_MS` (défaut `8000`)
 
 ## API disponible
 
@@ -74,6 +77,7 @@ Les specifications ecran par ecran sont disponibles dans [docs](c:/Projets/Quiz/
 - `POST /admin/api/sessions/:id/playlist/load`
 - `GET /admin/api/sessions/:id/stats`
 - `POST /admin/api/sessions/:id/decision`
+- `POST /admin/api/sessions/:id/decision/ai` (valide automatiquement via LLM en JSON strict)
 
 ### Joueur
 
@@ -83,7 +87,7 @@ Les specifications ecran par ecran sont disponibles dans [docs](c:/Projets/Quiz/
 - `GET /sessions/:id/players/:playerId`
 - `PUT /sessions/:id/players/:playerId/profile`
 - `DELETE /sessions/:id/players/:playerId`
-- `POST /sessions/:id/buzz`
+- `POST /sessions/:id/buzz` (accepte `proposal` structuré ou texte libre)
 - `GET /sessions/:id/ranking`
 
 ### WebSocket

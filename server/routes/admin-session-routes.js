@@ -8,7 +8,8 @@ export function createAdminSessionRoutes({
 	authService,
 	gameService,
 	persistenceService,
-	state
+	state,
+	llmAnswerValidatorService
 }) {
 	const router = express.Router();
 
@@ -256,6 +257,53 @@ export function createAdminSessionRoutes({
 			currentPlaylistLibraryId: session.currentPlaylistLibraryId,
 			playlist: session.playlist,
 			currentTrackIndex: session.currentTrackIndex
+		});
+	});
+
+
+	router.post('/admin/api/sessions/:id/decision/ai', async (req, res) => {
+		const session = getSession(req, res, state.sessions);
+		if (!session) return;
+
+		if (!llmAnswerValidatorService?.enabled) {
+			return res.status(503).json({ error: 'llm_validation_not_configured' });
+		}
+
+		const buzzPlayer = session.players.find((entry) => entry.id === session.currentBuzzPlayerId);
+		if (!buzzPlayer || !session.currentRound) {
+			return res.status(409).json({ error: 'no_current_buzz' });
+		}
+
+		const answerText = String(req.body?.answerText ?? session.currentBuzzProposal?.text ?? '').trim();
+		if (!answerText) {
+			return res.status(400).json({ error: 'missing_answer_text' });
+		}
+
+		let aiValidation;
+		try {
+			aiValidation = await llmAnswerValidatorService.validateAnswer({
+				currentRound: session.currentRound,
+				playerAnswerText: answerText
+			});
+		} catch (error) {
+			return res.status(503).json({
+				error: error.code || 'llm_validation_failed',
+				details: error.message
+			});
+		}
+
+		const result = gameService.applyDecision(session, aiValidation.verdict);
+		if (!result) {
+			return res.status(409).json({ error: 'no_current_buzz' });
+		}
+
+		res.json({
+			ok: true,
+			decision: aiValidation.verdict,
+			aiValidation,
+			ranking: result.ranking,
+			scoreDelta: result.scoreDelta,
+			playerId: buzzPlayer.id
 		});
 	});
 

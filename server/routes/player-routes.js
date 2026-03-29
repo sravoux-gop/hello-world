@@ -125,6 +125,20 @@ export function createPlayerRoutes({ broadcast, gameService, persistenceService,
 		if (!session) return;
 
 		const { playerId, proposal } = req.body ?? {};
+		const normalizedProposal = typeof proposal === 'string'
+			? { text: proposal.trim() }
+			: {
+				text: String(proposal?.text ?? '').trim() || undefined,
+				title: String(proposal?.title ?? '').trim() || undefined,
+				artist: String(proposal?.artist ?? '').trim() || undefined,
+				year: proposal?.year !== undefined && proposal?.year !== null
+					? Number(proposal.year)
+					: undefined
+			};
+		if (!normalizedProposal.text && !normalizedProposal.title && !normalizedProposal.artist && !Number.isFinite(normalizedProposal.year)) {
+			return res.status(400).json({ error: 'missing_proposal' });
+		}
+
 		const player = session.players.find((entry) => entry.id === playerId);
 		if (!player) {
 			return res.status(404).json({ error: 'player_not_found' });
@@ -138,7 +152,7 @@ export function createPlayerRoutes({ broadcast, gameService, persistenceService,
 			return res.status(409).json({ error: 'buzz_locked', currentBuzzPlayerId: session.currentBuzzPlayerId });
 		}
 
-		const result = gameService.lockBuzz(session, player, proposal);
+		const result = gameService.lockBuzz(session, player, normalizedProposal);
 		res.json(result);
 	});
 
